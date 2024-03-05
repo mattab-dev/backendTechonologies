@@ -1,13 +1,11 @@
 package com.capgemini.wsb.persistence.entity;
 
-import java.time.LocalDateTime;
+import com.fasterxml.jackson.annotation.JacksonInject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "VISIT")
@@ -15,12 +13,21 @@ public class VisitEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID", length = 19)
 	private Long id;
-
+	@Column(name = "DESCRIPTION")
 	private String description;
-
-	@Column(nullable = false)
+	@Column(name = "TIME", nullable = false)
 	private LocalDateTime time;
+	@ManyToOne
+	@JoinColumn(name = "doctor_id")
+	private DoctorEntity doctor;
+
+	@ManyToOne
+	@JoinColumn(name = "patient_id")
+	private PatientEntity patient;
+	@OneToMany(mappedBy = "visit")
+	private List<MedicalTreatmentEntity> medicalTreatmentEntityList;
 
 	public Long getId() {
 		return id;
@@ -46,4 +53,27 @@ public class VisitEntity {
 		this.time = time;
 	}
 
+	public List<MedicalTreatmentEntity> getMedicalTreatmentEntityList() {
+		return medicalTreatmentEntityList;
+	}
+
+	public void setMedicalTreatmentEntityList(List<MedicalTreatmentEntity> medicalTreatmentEntityList) {
+		this.medicalTreatmentEntityList = medicalTreatmentEntityList;
+	}
+
+	public DoctorEntity getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(DoctorEntity doctor) {
+		this.doctor = doctor;
+	}
+
+	public PatientEntity getPatient() {
+		return patient;
+	}
+
+	public void setPatient(PatientEntity patient) {
+		this.patient = patient;
+	}
 }
