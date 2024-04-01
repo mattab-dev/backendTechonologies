@@ -1,14 +1,15 @@
 package com.capgemini.wsb.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
-
-import javax.persistence.*;
 
 @Setter
 @Getter
@@ -16,6 +17,9 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "PATIENT")
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
 public class PatientEntity {
 
 	@Id
@@ -36,6 +40,6 @@ public class PatientEntity {
 	private LocalDate dateOfBirth;
 	@Column(name = "WEIGHT")
 	private Double weight;
-	@OneToMany(mappedBy = "patient")
+	@OneToMany(mappedBy = "patient", cascade = CascadeType.REMOVE)
 	private List<VisitEntity> visits;
 }

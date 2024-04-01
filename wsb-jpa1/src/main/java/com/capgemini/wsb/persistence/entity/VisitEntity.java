@@ -1,14 +1,19 @@
 package com.capgemini.wsb.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JacksonInject;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import lombok.Getter;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.*;
-
+@Getter
 @Entity
 @Table(name = "VISIT")
+@JsonIdentityInfo(
+		generator = ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
 public class VisitEntity {
 
 	@Id
@@ -22,55 +27,30 @@ public class VisitEntity {
 	@ManyToOne
 	@JoinColumn(name = "doctor_id")
 	private DoctorEntity doctor;
-
 	@ManyToOne
 	@JoinColumn(name = "patient_id")
 	private PatientEntity patient;
 	@OneToMany(mappedBy = "visit")
 	private List<MedicalTreatmentEntity> medicalTreatmentEntityList;
 
-	public Long getId() {
-		return id;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getDescription() {
-		return description;
 	}
 
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public LocalDateTime getTime() {
-		return time;
-	}
-
 	public void setTime(LocalDateTime time) {
 		this.time = time;
-	}
-
-	public List<MedicalTreatmentEntity> getMedicalTreatmentEntityList() {
-		return medicalTreatmentEntityList;
 	}
 
 	public void setMedicalTreatmentEntityList(List<MedicalTreatmentEntity> medicalTreatmentEntityList) {
 		this.medicalTreatmentEntityList = medicalTreatmentEntityList;
 	}
 
-	public DoctorEntity getDoctor() {
-		return doctor;
-	}
-
 	public void setDoctor(DoctorEntity doctor) {
 		this.doctor = doctor;
-	}
-
-	public PatientEntity getPatient() {
-		return patient;
 	}
 
 	public void setPatient(PatientEntity patient) {
