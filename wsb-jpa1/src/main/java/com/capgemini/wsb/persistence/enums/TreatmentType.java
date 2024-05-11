@@ -4,5 +4,8 @@ public enum TreatmentType {
 
 	USG,
 	EKG,
-	RTG
+	RTG,
+	VISION,
+	SKIN_CARE,
+	SURGERY
 }

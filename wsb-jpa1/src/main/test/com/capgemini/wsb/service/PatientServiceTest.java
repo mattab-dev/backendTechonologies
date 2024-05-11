@@ -8,12 +8,12 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@Transactional
 public class PatientServiceTest {
     @Autowired
     private PatientService patientService;
@@ -22,9 +22,8 @@ public class PatientServiceTest {
     @Autowired
     private DoctorDAO doctorDAO;
 
-    @Transactional
     @Test
-    public void testShouldFindPatientById() {
+    public void testShouldFindPatientByIdTest() {
         // given
         final Long patientId = 1L;
 
@@ -36,11 +35,10 @@ public class PatientServiceTest {
         Assertions.assertEquals("jan.nowak@yopmail.com", result.getEmail());
     }
 
-    @Transactional
     @Test
     public void testShouldNotFindPatientById() {
         // given
-        final Long patientId = 3L;
+        final Long patientId = 10L;
 
         // when
         final PatientTO result = patientService.findPatientById(patientId);
@@ -49,25 +47,23 @@ public class PatientServiceTest {
         Assertions.assertNull(result);
     }
 
-    @Transactional
     @Test
-    public void testShouldDeletePatientAndVisitButNoDoctor() {
+    public void testShouldDeletePatientAndVisitButNoDoctorTest() {
         // given
         final Long patientId = 1L;
         final Long visitId = 1L;
         final Long doctorId = 1L;
 
         // when
-        final HttpStatus deletedPatient = patientService.deletePatient(patientId);
+        final PatientTO deletedPatient = patientService.deletePatient(patientId);
 
         // then
-        Assertions.assertEquals(200, deletedPatient.value());
+        Assertions.assertEquals(patientId, deletedPatient.getId());
         Assertions.assertNull(patientService.findPatientById(patientId));
         Assertions.assertNull(visitDAO.findOne(visitId));
         Assertions.assertNotNull(doctorDAO.findOne(doctorId));
     }
 
-    @Transactional
     @Test
     public void testShouldResultHaveProperStructure() {
         // given
@@ -80,7 +76,7 @@ public class PatientServiceTest {
 
         // then
         Assertions.assertNotNull(result);
-        Assertions.assertEquals(visitDAO.findOne(visitId), result.getVisits().get(0));
-        Assertions.assertEquals(doctorDAO.findOne(doctorId), result.getVisits().get(0).getDoctor());
+        Assertions.assertEquals(visitDAO.findOne(visitId).getDescription(), result.getVisits().get(0).getDescription());
+        Assertions.assertEquals(doctorDAO.findOne(doctorId).getSpecialization(), result.getVisits().get(0).getDoctor().getSpecialization());
     }
 }

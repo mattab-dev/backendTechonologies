@@ -2,13 +2,13 @@ package com.capgemini.wsb.persistence.entity;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import lombok.Getter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Entity
 @Table(name = "VISIT")
 @JsonIdentityInfo(
@@ -17,7 +17,7 @@ import java.util.List;
 public class VisitEntity {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID", length = 19)
 	private Long id;
 	@Column(name = "DESCRIPTION")
@@ -55,5 +55,29 @@ public class VisitEntity {
 
 	public void setPatient(PatientEntity patient) {
 		this.patient = patient;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public LocalDateTime getTime() {
+		return time;
+	}
+
+	public DoctorEntity getDoctor() {
+		return doctor;
+	}
+
+	public PatientEntity getPatient() {
+		return patient;
+	}
+
+	public List<MedicalTreatmentEntity> getMedicalTreatmentEntityList() {
+		return medicalTreatmentEntityList;
 	}
 }
