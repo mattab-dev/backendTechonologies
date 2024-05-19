@@ -4,6 +4,7 @@ import com.capgemini.wsb.persistence.dao.PatientDAO;
 import com.capgemini.wsb.persistence.entity.PatientEntity;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.TypedQuery;
 import java.util.List;
 
 @Repository
@@ -20,10 +21,8 @@ public class PatientDAOImpl extends AbstractDao<PatientEntity, Long> implements 
     }
 
     @Override
-    public List<PatientEntity> findPatientsByVisitsCountGreaterThan(long countValue) {
-        return entityManager.createQuery(
-                        "SELECT p FROM PatientEntity p JOIN FETCH p.visits v GROUP BY p.id HAVING COUNT(v.id) > :count")
-                .setParameter("count", countValue)
-                .getResultList();
+    public List<PatientEntity> findPatientsWithMoreVisitsThan(int visitThreshold) {
+        return entityManager.createQuery("SELECT p FROM PatientEntity p WHERE size(p.visits) > :visitThreshold", PatientEntity.class)//
+                .setParameter("visitThreshold", visitThreshold).getResultList();
     }
 }

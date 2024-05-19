@@ -53,7 +53,7 @@ public class PatientServiceImpl implements PatientService {
     @Override
     public List<PatientTO> getByCount(int visitCount) {
         final List<PatientTO> resultList = new ArrayList<>();
-        final List<PatientEntity> patients = patientDAO.findPatientsByVisitsCountGreaterThan(visitCount);
+        final List<PatientEntity> patients = patientDAO.findPatientsWithMoreVisitsThan(visitCount);
         if(!patients.isEmpty()) {
             resultList.addAll(patients.stream().map(PatientTOMapper::mapToTO).collect(toList()));
         }

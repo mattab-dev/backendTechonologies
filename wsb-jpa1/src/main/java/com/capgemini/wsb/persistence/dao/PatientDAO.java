@@ -7,6 +7,5 @@ import java.util.List;
 public interface PatientDAO extends Dao<PatientEntity, Long> {
     List<PatientEntity> findPatientBySurname(final String surname);
     List<PatientEntity> findPatientsHeavierThan(final double weight);
-
-    List<PatientEntity> findPatientsByVisitsCountGreaterThan(final long count);
+    List<PatientEntity> findPatientsWithMoreVisitsThan(int visitThreshold);
 }

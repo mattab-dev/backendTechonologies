@@ -34,13 +34,14 @@ public class PatientDAOTest {
     @Test
     public void testShouldFindPatientWithVisitCountGreaterThanTest() {
         // given
-        final int visitCount = 1;
+        final int visitCount = 2;
 
         // when
-        final List<PatientEntity> patients = patientDAO.findPatientsByVisitsCountGreaterThan(visitCount);
+        final List<PatientEntity> patients = patientDAO.findPatientsWithMoreVisitsThan(visitCount);
 
         // then
         Assertions.assertEquals(1, patients.size());
+        Assertions.assertEquals(3, patients.get(0).getVisits().size());
     }
 
     @Test
